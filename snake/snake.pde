@@ -2,7 +2,7 @@ int w, startX, startY, appleX, appleY, score, rectX, rectY, sizeX, sizeY, highsc
 int [][] snake = new int[2][2];
 int speedX, speedY;
 PImage apple, keys;
-boolean eating, gameOver, gameStarted;
+boolean eating, gameOver, gameStarted, newHigh;
 
 //initalize starting variables
 void setup(){
@@ -18,6 +18,7 @@ void setup(){
   eating = true;
   gameOver = true;
   gameStarted = false;
+  newHigh = false;
   score = 0;
   highscore = -1;
   rectX = 334; rectY =500; sizeX= 200; sizeY = 100;
@@ -189,14 +190,25 @@ void draw(){
   else{
     cursor();
     fill(255,0,0);
-    textSize(72);
     textAlign(CENTER);
     
     //display game over page
     if(highscore != -1){
       if(score > highscore){
        highscore = score; 
+       if(score != 0){
+         newHigh = true;
+       }
       }
+      
+      //display if new highscore is set
+      if(newHigh){
+        textSize(30);
+        fill(252,252,3);
+        text("NEW HIGHSCORE!", width/2, height/5);
+      }
+      textSize(72);
+      fill(255,0,0);
       text("GAME OVER",width/2, height/3);
       textSize(48);
       text("Your score is " + score,width/2, height/3 + 50);
@@ -256,6 +268,7 @@ void mousePressed(){
    snake = snakeCopy;
    score = 0;
    eating = true;
+   newHigh = false;
 }
  else if(overRect(rectX, rectY, sizeX, sizeY) == true && gameOver== true && !gameStarted){
   gameStarted = true;
