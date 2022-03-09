@@ -186,6 +186,7 @@ void draw(){
     fill(255,0,0);
     textSize(72);
     textAlign(CENTER);
+    
     //display game over page
     if(highscore != -1){
       if(score > highscore){
@@ -208,6 +209,8 @@ void draw(){
       textSize(48);
       text("REPLAY", width/2,565);
     }
+    
+    //display start page
     else{
       text("Welcome to Snake!", width/2, height/2);
        if(overRect(rectX, rectY, sizeX, sizeY)){
@@ -227,7 +230,7 @@ void draw(){
     
   }
 
-//is the mouse over the replay button?
+//is the mouse over the replay/play button?
 boolean overRect(int x, int y, int w, int h)  {
   if (mouseX >= x && mouseX <= x+w && mouseY >= y && mouseY <= y+h) {
     return true;
@@ -236,7 +239,7 @@ boolean overRect(int x, int y, int w, int h)  {
   }
 }
 
-//did the user click the replay button? if so, new game
+//did the user click the replay/play button? if so, start game
 void mousePressed(){
  if(overRect(rectX, rectY, sizeX, sizeY) == true && gameOver== true && gameStarted){
    gameOver = false;
