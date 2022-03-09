@@ -2,7 +2,7 @@ int w, startX, startY, appleX, appleY, score, rectX, rectY, sizeX, sizeY, highsc
 int [][] snake = new int[2][2];
 int speedX, speedY;
 PImage apple;
-boolean eating, gameOver;
+boolean eating, gameOver, gameStarted;
 
 //initalize starting variables
 void setup(){
@@ -15,7 +15,8 @@ void setup(){
   apple = loadImage("pics/apple.png");
   imageMode(CENTER);
   eating = true;
-  gameOver = false;
+  gameOver = true;
+  gameStarted = false;
   score = 0;
   highscore = -1;
   rectX = 334; rectY =500; sizeX= 200; sizeY = 100;
@@ -175,32 +176,53 @@ void draw(){
      
    }
    timer = 8;
+   if(highscore == -1){
+    highscore = 0; 
+   }
    }
   }
   else{
-    //display game over page
+   
     fill(255,0,0);
     textSize(72);
     textAlign(CENTER);
-    text("GAME OVER",width/2, height/3);
-    textSize(48);
-    text("Your score is " + score,width/2, height/3 + 50);
-    textSize(30);
-    if(score > highscore){
-     highscore = score; 
-    }
-    text("Current highscore: " + highscore,width/2, height/2);
-    if(overRect(rectX, rectY, sizeX, sizeY)){
-     stroke(140,11,1);
-     fill(140,11,1);
+    //display game over page
+    if(highscore != -1){
+      if(score > highscore){
+       highscore = score; 
+      }
+      text("GAME OVER",width/2, height/3);
+      textSize(48);
+      text("Your score is " + score,width/2, height/3 + 50);
+      textSize(30);
+      text("Current highscore: " + highscore,width/2, height/2);
+      if(overRect(rectX, rectY, sizeX, sizeY)){
+       stroke(140,11,1);
+       fill(140,11,1);
+      }
+      else{
+        stroke(255,0,0);
+      }
+      rect(rectX, rectY, sizeX, sizeY);
+      fill(0);
+      textSize(48);
+      text("REPLAY", width/2,565);
     }
     else{
-      stroke(255,0,0);
+      text("Welcome to Snake!", width/2, height/2);
+       if(overRect(rectX, rectY, sizeX, sizeY)){
+       stroke(140,11,1);
+       fill(140,11,1);
+      }
+      else{
+        stroke(255,0,0);
+      }
+      rect(rectX, rectY, sizeX, sizeY);
+      fill(0);
+      textSize(48);
+      text("PLAY", width/2,565);
+      
     }
-    rect(rectX, rectY, sizeX, sizeY);
-    fill(0);
-    textSize(48);
-    text("REPLAY", width/2,565);
   }
     
   }
@@ -216,7 +238,7 @@ boolean overRect(int x, int y, int w, int h)  {
 
 //did the user click the replay button? if so, new game
 void mousePressed(){
- if(overRect(rectX, rectY, sizeX, sizeY) == true && gameOver== true){
+ if(overRect(rectX, rectY, sizeX, sizeY) == true && gameOver== true && gameStarted){
    gameOver = false;
    startX = 50; startY = 434;
    speedX = w; 
@@ -225,5 +247,10 @@ void mousePressed(){
    snakeCopy[0][0] = startX + w; snakeCopy[0][1] = startY; snakeCopy[1][0] = startX; snakeCopy[1][1] = startY;
    snake = snakeCopy;
    score = 0;
+   eating = true;
 }
+ else if(overRect(rectX, rectY, sizeX, sizeY) == true && gameOver== true && !gameStarted){
+  gameStarted = true;
+  gameOver = false;
+ }
  }
