@@ -1,7 +1,7 @@
 int w, startX, startY, appleX, appleY, score, rectX, rectY, sizeX, sizeY, highscore, timer;
 int [][] snake = new int[2][2];
 int speedX, speedY;
-PImage apple;
+PImage apple, keys;
 boolean eating, gameOver, gameStarted;
 
 //initalize starting variables
@@ -13,6 +13,7 @@ void setup(){
   speedX = 0;
   speedY = 0;
   apple = loadImage("pics/apple.png");
+  keys = loadImage("pics/arrows.png");
   imageMode(CENTER);
   eating = true;
   gameOver = true;
@@ -126,6 +127,10 @@ void draw(){
    else if(speedY > 0){
     ellipse(snake[0][0] + w/3, snake[0][1] + 2*w/3, 10,10);
     ellipse(snake[0][0] + 2*w/3, snake[0][1] + 2*w/3, 10,10); 
+   }
+   
+   if(speedX == 0 && speedY == 0){
+     image(keys, height/2, width/2, 200,200); 
    }
    
    //timer is used to keep a high frame rate while keeping a moderate snake speed
