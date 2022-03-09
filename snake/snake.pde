@@ -93,8 +93,8 @@ void draw(){
      boolean conflict = true;
      while(conflict){
       conflict = false; 
-      appleX = int(random(1,16));
-      appleY = int(random(1,16));
+      appleX = int(random(1,17));
+      appleY = int(random(1,17));
       for(int i = 0; i < snake.length; i++){
        if(snake[i][0]/48 == appleX && snake[i][1]/48 == appleY){  //make sure apple isn't generated on the snake
         conflict = true; 
