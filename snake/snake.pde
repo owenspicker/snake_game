@@ -57,6 +57,7 @@ void draw(){
  background(0);
  //is the game active?
  if(!gameOver){
+   noCursor();
    fill(255,0,0);
    textSize(24);
    textAlign(LEFT);
@@ -129,6 +130,7 @@ void draw(){
     ellipse(snake[0][0] + 2*w/3, snake[0][1] + 2*w/3, 10,10); 
    }
    
+   //display key icon at start of game
    if(speedX == 0 && speedY == 0){
      image(keys, height/2, width/2, 200,200); 
    }
@@ -140,7 +142,7 @@ void draw(){
    else{
    
    if(speedX != 0 || speedY !=0){
-     for(int i = snake.length -1; i >= 0; i--){         //update snake
+     for(int i = snake.length -1; i >= 0; i--){         //update snake location
          if(i ==0){
            if(speedX !=0){
              snake[i][0] = snake[i][0] + speedX;
@@ -185,7 +187,7 @@ void draw(){
    }
   }
   else{
-   
+    cursor();
     fill(255,0,0);
     textSize(72);
     textAlign(CENTER);
