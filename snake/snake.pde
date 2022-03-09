@@ -10,7 +10,7 @@ void setup(){
   w= 48;
   startX = 50; startY = 434;
   frameRate(80);
-  speedX = w;
+  speedX = 0;
   speedY = 0;
   apple = loadImage("pics/apple.png");
   imageMode(CENTER);
@@ -33,7 +33,7 @@ void keyPressed(){
       }
     }
     else if(keyCode == LEFT){
-      if(speedX == 0){
+      if(speedX == 0 && speedY != 0){
        speedX = -w; speedY = 0;
       }
     }
@@ -111,7 +111,7 @@ void draw(){
   
    fill(0);
    //draw snake eyes based on direction
-   if(speedX > 0){
+   if(speedX > 0 || (speedX == 0 && speedY == 0)){
      ellipse(snake[0][0] + 2*w/3, snake[0][1] + w/3, 10,10);
      ellipse(snake[0][0] + 2*w/3, snake[0][1] + 2*w/3, 10,10);
    }
@@ -134,24 +134,22 @@ void draw(){
    }
    else{
    
-   for(int i = snake.length -1; i >= 0; i--){         //update snake
-       if(i ==0){
-         if(speedX !=0){
-           snake[i][0] = snake[i][0] + speedX;
+   if(speedX != 0 || speedY !=0){
+     for(int i = snake.length -1; i >= 0; i--){         //update snake
+         if(i ==0){
+           if(speedX !=0){
+             snake[i][0] = snake[i][0] + speedX;
+           }
+          else{
+            snake[i][1] = snake[i][1] + speedY;
+          }
          }
-        else{
-          snake[i][1] = snake[i][1] + speedY;
-        }
-       }
-       else{
-         snake[i][0] = snake[i-1][0];
-         snake[i][1] = snake[i-1][1];
-       }
-      
-     
-  
+         else{
+           snake[i][0] = snake[i-1][0];
+           snake[i][1] = snake[i-1][1];
+         }
+     }
    }
-   
    if(snake[0][0]/48 == appleX && snake[0][1]/48== appleY){      //is snake eating? if so append size using temporary 2D array copy
     eating = true;
     score++;
@@ -244,7 +242,7 @@ void mousePressed(){
  if(overRect(rectX, rectY, sizeX, sizeY) == true && gameOver== true && gameStarted){
    gameOver = false;
    startX = 50; startY = 434;
-   speedX = w; 
+   speedX = 0;
    speedY = 0;
    int [][] snakeCopy = new int [2][2];
    snakeCopy[0][0] = startX + w; snakeCopy[0][1] = startY; snakeCopy[1][0] = startX; snakeCopy[1][1] = startY;
