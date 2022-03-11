@@ -1,7 +1,7 @@
 int w, startX, startY, appleX, appleY, score, rectX, rectY, sizeX, sizeY, highscore, timer;
 int [][] snake = new int[2][2];
 int speedX, speedY;
-PImage apple, keys;
+PImage apple, keys, snake_logo, snake2;
 boolean eating, gameOver, gameStarted, newHigh;
 
 //initalize starting variables
@@ -14,6 +14,8 @@ void setup(){
   speedY = 0;
   apple = loadImage("pics/apple.png");
   keys = loadImage("pics/arrows.png");
+  snake_logo = loadImage("pics/snake.png");
+  snake2 = loadImage("pics/snake1.png");
   imageMode(CENTER);
   eating = true;
   gameOver = true;
@@ -217,6 +219,8 @@ void draw(){
        }
       }
       
+      image(snake2, width/2, height*0.7);
+      
       //display if new highscore is set
       if(newHigh){
         textSize(30);
@@ -247,7 +251,9 @@ void draw(){
     
     //display start page
     else{
-      text("Welcome to Snake!", width/2, height/2);
+      textSize(64);
+      image(snake_logo, width/2, height/2);
+      text("Snake!", width/2, 5*height/12);
       
       //feedback to user if hovering over start button
        if(overRect(rectX, rectY, sizeX, sizeY)){
