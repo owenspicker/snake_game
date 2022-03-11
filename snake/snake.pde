@@ -49,8 +49,25 @@ void keyPressed(){
        speedX = 0; speedY = w;
       }
     }
-    
-    
+    //allow user to start/replay game pressing enter instead of having to click
+    else if(keyCode == ENTER){
+      if(!gameStarted){
+        gameOver = false;
+        gameStarted = true;
+      }
+      else if(gameStarted && gameOver){
+        gameOver = false;
+        startX = 50; startY = 434;
+        speedX = 0;
+        speedY = 0;
+        int [][] snakeCopy = new int [2][2];
+        snakeCopy[0][0] = startX + w; snakeCopy[0][1] = startY; snakeCopy[1][0] = startX; snakeCopy[1][1] = startY;
+        snake = snakeCopy;
+        score = 0;
+        eating = true;
+        newHigh = false;
+      }
+    }
   }
 }
 
