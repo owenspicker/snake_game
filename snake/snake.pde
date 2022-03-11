@@ -56,16 +56,7 @@ void keyPressed(){
         gameStarted = true;
       }
       else if(gameStarted && gameOver){
-        gameOver = false;
-        startX = 50; startY = 434;
-        speedX = 0;
-        speedY = 0;
-        int [][] snakeCopy = new int [2][2];
-        snakeCopy[0][0] = startX + w; snakeCopy[0][1] = startY; snakeCopy[1][0] = startX; snakeCopy[1][1] = startY;
-        snake = snakeCopy;
-        score = 0;
-        eating = true;
-        newHigh = false;
+        newGame();
       }
     }
   }
@@ -73,15 +64,20 @@ void keyPressed(){
 
 void draw(){
  background(0);
+ 
  //is the game active?
  if(!gameOver){
    noCursor();
+   
+   //display the score
    fill(255,0,0);
    textSize(24);
    textAlign(LEFT);
-   text("Score: " + score, 5, 30);     //display score
+   text("Score: " + score, 5, 30); 
+   
+   //draw game board
    stroke(0);
-   for(int i = 50; i < 800; i += w){    //game board
+   for(int i = 50; i < 800; i += w){   
      for(int j = 50; j < 800; j+=w){
        if((i - 50) % (w*2) == 0){
          if((j-50) % (w*2) == 0){
@@ -89,7 +85,7 @@ void draw(){
          }
        else{
          fill(75,227,61);
-       }
+         }
        }
        else{
         if((j-50) % (w*2) == 0){
@@ -97,40 +93,41 @@ void draw(){
          }
        else{
         fill(66,176,56);
-       }
-         
-         
+         }
        }
        rect(i, j, w,w);
-       
      }
    }
    
-   if(eating){              //if eating apple, generate new location
+   //if eating apple, generate new location
+   if(eating){        
      boolean conflict = true;
      while(conflict){
       conflict = false; 
       appleX = int(random(1,17));
       appleY = int(random(1,17));
       for(int i = 0; i < snake.length; i++){
-       if(snake[i][0]/48 == appleX && snake[i][1]/48 == appleY){  //make sure apple isn't generated on the snake
+       //make sure apple isn't generated on the snake
+       if(snake[i][0]/48 == appleX && snake[i][1]/48 == appleY){
         conflict = true; 
        }
       }
      }
-
      eating = false;
    }
+   
+   //display apple
    image(apple, appleX*48 -w/2+50, appleY*48 - w/2+50, 40,40);
+   
+   //draw the snake
    fill(0,0,255);
-   stroke(0,0,145);;
-   for(int i = 0; i < snake.length; i++){  //draw the snake
+   stroke(0,0,145);
+   for(int i = 0; i < snake.length; i++){ 
      rect(snake[i][0], snake[i][1], w,w);
    }
   
-  
-   fill(0);
    //draw snake eyes based on direction
+   fill(0);
    if(speedX > 0 || (speedX == 0 && speedY == 0)){
      ellipse(snake[0][0] + 2*w/3, snake[0][1] + w/3, 10,10);
      ellipse(snake[0][0] + 2*w/3, snake[0][1] + 2*w/3, 10,10);
@@ -158,9 +155,9 @@ void draw(){
     timer--; 
    }
    else{
-   
+   //update snake location
    if(speedX != 0 || speedY !=0){
-     for(int i = snake.length -1; i >= 0; i--){         //update snake location
+     for(int i = snake.length -1; i >= 0; i--){       
          if(i ==0){
            if(speedX !=0){
              snake[i][0] = snake[i][0] + speedX;
@@ -175,7 +172,9 @@ void draw(){
          }
      }
    }
-   if(snake[0][0]/48 == appleX && snake[0][1]/48== appleY){      //is snake eating? if so append size using temporary 2D array copy
+   
+   //is snake eating? if so append size using temporary 2D array copy
+   if(snake[0][0]/48 == appleX && snake[0][1]/48== appleY){     
     eating = true;
     score++;
     int [][] snakeCopy = new int [snake.length + 1][2];
@@ -187,23 +186,23 @@ void draw(){
     snake = snakeCopy;
    }
    
-   if(snake[0][0] > 770|| snake[0][1] > 770 || snake[0][0] < 50 || snake[0][1] < 50){  //checking if snake is out of bounds
+   //checking if snake is out of bounds
+   if(snake[0][0] > 770|| snake[0][1] > 770 || snake[0][0] < 50 || snake[0][1] < 50){
      gameOver = true;
    }
-   
+ 
+   //checking if snake hits itself
    for(int i = 1; i < snake.length; i++){
-    
-    if(snake[0][0] == snake[i][0] && snake[0][1] == snake[i][1]){ //checking if snake hits itself
+    if(snake[0][0] == snake[i][0] && snake[0][1] == snake[i][1]){
      gameOver = true; 
     }
-     
    }
    timer = 8;
    if(highscore == -1){
     highscore = 0; 
    }
-   }
   }
+ }
   else{
     cursor();
     fill(255,0,0);
@@ -231,6 +230,8 @@ void draw(){
       text("Your score is " + score,width/2, height/3 + 50);
       textSize(30);
       text("Current highscore: " + highscore,width/2, height/2);
+      
+      //feedback to user when hovering over replay button
       if(overRect(rectX, rectY, sizeX, sizeY)){
        stroke(140,11,1);
        fill(140,11,1);
@@ -247,6 +248,8 @@ void draw(){
     //display start page
     else{
       text("Welcome to Snake!", width/2, height/2);
+      
+      //feedback to user if hovering over start button
        if(overRect(rectX, rectY, sizeX, sizeY)){
        stroke(140,11,1);
        fill(140,11,1);
@@ -261,8 +264,7 @@ void draw(){
       
     }
   }
-    
-  }
+}
 
 //is the mouse over the replay/play button?
 boolean overRect(int x, int y, int w, int h)  {
@@ -275,7 +277,17 @@ boolean overRect(int x, int y, int w, int h)  {
 
 //did the user click the replay/play button? if so, start game
 void mousePressed(){
- if(overRect(rectX, rectY, sizeX, sizeY) == true && gameOver== true && gameStarted){
+ if(overRect(rectX, rectY, sizeX, sizeY) && gameOver && gameStarted){
+   newGame();
+}
+ else if(overRect(rectX, rectY, sizeX, sizeY) && gameOver && !gameStarted){
+  gameStarted = true;
+  gameOver = false;
+ }
+ }
+ 
+ //helper function that resets game (replay)
+ void newGame(){
    gameOver = false;
    startX = 50; startY = 434;
    speedX = 0;
@@ -286,9 +298,4 @@ void mousePressed(){
    score = 0;
    eating = true;
    newHigh = false;
-}
- else if(overRect(rectX, rectY, sizeX, sizeY) == true && gameOver== true && !gameStarted){
-  gameStarted = true;
-  gameOver = false;
- }
  }
