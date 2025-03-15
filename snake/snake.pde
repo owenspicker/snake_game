@@ -2,7 +2,8 @@ int w, startX, startY, appleX, appleY, score, rectX, rectY, sizeX, sizeY, highsc
 int [][] snake = new int[2][2];
 int speedX, speedY;
 PImage apple, keys, snake_logo, snake2;
-boolean eating, gameOver, gameStarted, newHigh;
+boolean eating, gameOver, gameStarted, newHigh, newGame;
+String highscoreFilename = "highscore.txt";
 
 //initalize starting variables
 void setup(){
@@ -17,19 +18,25 @@ void setup(){
   snake_logo = loadImage("pics/snake.png");
   snake2 = loadImage("pics/snake1.png");
   imageMode(CENTER);
+  newGame = true;
   eating = true;
   gameOver = true;
   gameStarted = false;
   newHigh = false;
   score = 0;
-  highscore = -1;
   rectX = 334; rectY =500; sizeX= 200; sizeY = 100;
   timer = 8;
   snake[0][0] = startX + w; snake[0][1] = startY; snake[1][0] = startX; snake[1][1] = startY;
+  highscore = -1;
+  String[] highscoreData = loadStrings(highscoreFilename);
+  if(highscoreData != null && highscoreData.length > 0){
+    highscore = int(highscoreData[0]);
+  }
 }
 
 //snake movements on keypress
 void keyPressed(){
+  newGame = false;
   if(keyPressed){
     if(keyCode == RIGHT){
       if(speedX == 0){
@@ -211,9 +218,12 @@ void draw(){
     textAlign(CENTER);
     
     //display game over page
-    if(highscore != -1){
+    if(!newGame){
       if(score > highscore){
        highscore = score; 
+       //save new high to file
+       String[] highscoreData = {str(highscore)};
+       saveStrings(highscoreFilename, highscoreData);
        if(score != 0){
          newHigh = true;
        }
